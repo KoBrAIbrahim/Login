@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:simple_app/Pages/main_page.dart';
 import 'package:simple_app/models/product_Used/product_service.dart';
-import 'package:simple_app/models/product_Used/product.dart'; 
+import 'package:simple_app/models/product_Used/product.dart';
 
-class DeleteProductPage extends StatefulWidget {
+class EditProductPage extends StatefulWidget {
   final ProductService productService;
 
-  DeleteProductPage({required this.productService});
+  EditProductPage({required this.productService});
 
   @override
-  _DeleteProductPageState createState() => _DeleteProductPageState();
+  _EditProductPageState createState() => _EditProductPageState();
 }
 
-class _DeleteProductPageState extends State<DeleteProductPage> {
-  List<Product> selectedProducts = []; 
+class _EditProductPageState extends State<EditProductPage> {
+  List<Product> selectedProducts = [];
 
   @override
   Widget build(BuildContext context) {
     List<Product> allProducts = widget.productService.getProducts();
 
     return Scaffold(
-      appBar: AppBar(title: Text('Delete Product'), backgroundColor: Colors.blue),
+      appBar: AppBar(title: Text('Edit Products'), backgroundColor: Colors.blue),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -53,15 +52,15 @@ class _DeleteProductPageState extends State<DeleteProductPage> {
                 for (var product in selectedProducts) {
                   widget.productService.removeProduct(product.name);
                 }
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MainPage(
-                              productService: widget.productService,
-                              username: '',
-                            )));
+                setState(() {
+                  selectedProducts.clear();
+                });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Selected products deleted')),
+                );
               },
               child: Text('Delete Selected Products'),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             ),
           ],
         ),

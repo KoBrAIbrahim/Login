@@ -6,16 +6,16 @@ import 'package:simple_app/models/user.dart';
 
 void main() {
   User admin = Admin(
-    username: "Ali",
-    email: "ali@gmail.com",
+    username: "Ibrahim",
+    email: "ibrahim@gmail.com",
     password: "123123123",
     adminLevel: "Super",
     gender: true,
   );
 
   User customer = Customer(
-    username: "Ibrahim",
-    email: "ibrahim@gmail.com",
+    username: "Ali",
+    email: "ali@gmail.com",
     password: "123123123",
     address: "12 Main Street",
     gender: true,

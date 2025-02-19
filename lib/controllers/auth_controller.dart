@@ -1,7 +1,7 @@
 import 'package:simple_app/models/user.dart';
 
 abstract class AuthService {
-  bool login(String username, String password);
+  User? login(String username, String password);
   void register(String username, String email, String password);
 }
 
@@ -9,15 +9,15 @@ class AuthController implements AuthService {
   Map<String, User> users;
   AuthController({required this.users});
   @override
-  bool login(String username, String password) {
+  User? login(String username, String password) {
     if (users.containsKey(username)) {
       if (users[username]?.password == password) {
-        return true;
+        return users[username];
       } else {
-        return false;
+        return null;
       }
     } else {
-      return false;
+      return null;
     }
   }
 

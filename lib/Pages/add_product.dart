@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_app/Pages/main_page.dart';
 import 'package:simple_app/models/product_Used/product.dart';
 import 'package:simple_app/models/product_Used/product_service.dart';
+import 'package:simple_app/models/user.dart';
 
 class AddProductPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
@@ -9,7 +10,9 @@ class AddProductPage extends StatelessWidget {
   final TextEditingController quantityController = TextEditingController();
   final ProductService productService;
   final String username;
-  AddProductPage({required this.productService , required this.username});
+  final User user;
+
+  AddProductPage({required this.productService, required this.username, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +51,7 @@ class AddProductPage extends StatelessWidget {
                         builder: (context) => MainPage(
                               productService: productService,
                               username: '',
+                              users: user,
                             )));
               },
               child: Text('Add Product'),

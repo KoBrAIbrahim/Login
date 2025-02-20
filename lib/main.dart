@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/Pages/login_page.dart';
+import 'package:simple_app/Pages/main_page.dart';
+import 'package:simple_app/Pages/add_product.dart';
+import 'package:simple_app/Pages/profilepage.dart';
+import 'package:simple_app/Pages/register_page.dart';
 import 'package:simple_app/models/product_Used/product.dart';
 import 'package:simple_app/models/product_Used/product_service.dart';
 import 'package:simple_app/models/user.dart';
@@ -38,24 +42,64 @@ void main() {
   productService
       .addProduct(Product(id: 5, name: "Keyboard", price: 80.0, quantity: 12));
 
-  runApp(MyApp(
-    productService: productService,
-    users: users,
-  ));
+  runApp(MyApp(productService: productService, users: users));
 }
 
 class MyApp extends StatelessWidget {
   final ProductService productService;
   final Map<String, User> users;
+
   MyApp({required this.productService, required this.users});
+
+  Route<dynamic> _generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case '/':
+        return MaterialPageRoute(
+          builder: (context) =>
+              LoginPage(productService: productService, users: users),
+        );
+      case '/mainPage':
+        final args = settings.arguments as Map<String, dynamic>;
+        final username = args['username'] as String;
+        final user = args['user'] as User;
+        final productService = args['productService'] as ProductService;
+        return MaterialPageRoute(
+          builder: (context) => MainPage(
+              username: username, productService: productService, user: user),
+        );
+      case '/addProduct':
+        final args = settings.arguments as Map<String, dynamic>;
+        final username = args['username'] as String;
+        final user = args['user'] as User;
+        final productService = args['productService'] as ProductService;
+        return MaterialPageRoute(
+          builder: (context) => AddProductPage(
+              productService: productService, username: username, user: user),
+        );
+      case '/registerPage':
+        return MaterialPageRoute(
+          builder: (context) =>
+              RegisterPage(productService: productService, users: users),
+        );
+      case '/profile':
+       final user = settings.arguments as User;
+        return MaterialPageRoute(
+          builder: (context) => ProfilePage(users: user),
+        );
+      default:
+        return MaterialPageRoute(
+          builder: (context) =>
+              LoginPage(productService: productService, users: users),
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(
-        productService: productService,
-        users: users,
-      ),
+      initialRoute: '/',
+      onGenerateRoute: _generateRoute,
     );
   }
 }

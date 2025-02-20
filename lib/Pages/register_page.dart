@@ -8,7 +8,7 @@ import '../widgets/custom_textfield.dart';
 class RegisterPage extends StatefulWidget {
   final ProductService productService;
   final Map<String, User> users;
-  RegisterPage({required this.productService, required this.users});
+  const RegisterPage({super.key, required this.productService, required this.users});
 
   @override
   _RegisterPageState createState() =>
@@ -116,6 +116,11 @@ class _RegisterPageState extends State<RegisterPage> {
             ElevatedButton(
               onPressed: () => _register(context),
               child: Text('Sign up'),
+            ),
+            SizedBox(height: 15),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Go Back to Login page'),
             ),
           ],
         ),

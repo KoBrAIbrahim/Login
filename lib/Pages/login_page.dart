@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:simple_app/models/product_Used/product_service.dart';
 import 'package:simple_app/models/user.dart';
 import '../controllers/auth_controller.dart';
-import 'main_page.dart';
-import 'register_page.dart';
 
 class LoginPage extends StatefulWidget {
+  
   final ProductService productService;
   final Map<String, User> users;
 
@@ -19,25 +18,28 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  
 
   void _login(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      final AuthController _authController = AuthController(users: widget.users);
-      User? auth = _authController.login(usernameController.text, passwordController.text);
+      final AuthController _authController =
+          AuthController(users: widget.users);
+      User? auth = _authController.login(
+          usernameController.text, passwordController.text);
       if (auth != null) {
-        Navigator.push(
+        
+        Navigator.pushReplacementNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => MainPage(
-              username: usernameController.text,
-              productService: widget.productService,
-              users: auth,
-            ),
-          ),
+          '/mainPage',
+          arguments: {
+            'username': usernameController.text,
+            'productService': widget.productService,
+            'user': auth,
+          },
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Invalid username or password')),
+          const SnackBar(content: Text('Invalid username or password')),
         );
       }
     }
@@ -47,9 +49,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: Text('Login Page'), backgroundColor: Colors.blue),
+      appBar:
+          AppBar(title: const Text('Login Page'), backgroundColor: Colors.blue),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -59,10 +62,10 @@ class _LoginPageState extends State<LoginPage> {
                 'assets/login.jpg',
                 height: 150,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFormField(
                 controller: usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Username",
                   prefixIcon: Icon(Icons.person),
                   border: OutlineInputBorder(),
@@ -74,11 +77,11 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextFormField(
                 controller: passwordController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Password",
                   prefixIcon: Icon(Icons.lock),
                   border: OutlineInputBorder(),
@@ -90,22 +93,21 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () => _login(context),
-                child: Text('Login'),
+                child: const Text('Login'),
               ),
               ElevatedButton(
-                onPressed: () => Navigator.push(
+                onPressed: () => Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => RegisterPage(
-                      productService: widget.productService,
-                      users: widget.users,
-                    ),
-                  ),
+                  '/registerPage',
+                  arguments: {
+                    'productService': widget.productService,
+                    'users': widget.users,
+                  },
                 ),
-                child: Text('Register'),
+                child: const Text('Register'),
               ),
             ],
           ),

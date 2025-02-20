@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:simple_app/Pages/add_product.dart';
-import 'package:simple_app/Pages/profilepage.dart';
 import 'package:simple_app/models/product_Used/product_service.dart';
 import 'package:simple_app/models/product_Used/product.dart';
 import 'package:simple_app/models/user.dart';
@@ -8,12 +6,13 @@ import 'package:simple_app/models/user.dart';
 class MainPage extends StatefulWidget {
   final String username;
   final ProductService productService;
-  final User users;
+  final User? user;
 
-  MainPage(
-      {required this.username,
-      required this.productService,
-      required this.users});
+  MainPage({
+    required this.username,
+    required this.productService,
+    required this.user,
+  });
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -29,7 +28,7 @@ class _MainPageState extends State<MainPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Main Page'),
+        title: const Text('Main Page'),
         backgroundColor: Colors.blue,
         actions: [
           IconButton(
@@ -42,14 +41,15 @@ class _MainPageState extends State<MainPage> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.person),
+            icon: const Icon(Icons.person),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProfilePage(users: widget.users),
-                ),
-              );
+              if (widget.user != null) {
+                Navigator.pushNamed(
+                  context,
+                  '/profile',
+                  arguments: widget.user,
+                );
+              }
             },
           ),
         ],
@@ -72,7 +72,6 @@ class _MainPageState extends State<MainPage> {
               itemCount: allProducts.length,
               itemBuilder: (context, index) {
                 final product = allProducts[index];
-
                 return ListTile(
                   leading: isEditMode
                       ? Checkbox(
@@ -98,26 +97,26 @@ class _MainPageState extends State<MainPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               SizedBox(
-                  height: 50,
-                  width: 150,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 140, 157, 211)),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddProductPage(
-                            productService: widget.productService,
-                            username: widget.username,
-                            user: widget.users,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Text('Add Product'),
-                  )),
+                height: 50,
+                width: 150,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 140, 157, 211),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/addProduct',
+                      arguments: {
+                        'productService': widget.productService,
+                        'username': widget.username,
+                        'user': widget.user,
+                      },
+                    );
+                  },
+                  child: const Text('Add Product'),
+                ),
+              ),
               if (isEditMode)
                 ElevatedButton(
                   onPressed: selectedProducts.isNotEmpty
@@ -129,13 +128,14 @@ class _MainPageState extends State<MainPage> {
                             selectedProducts.clear();
                           });
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text('Selected products deleted')),
+                            const SnackBar(
+                              content: Text('Selected products deleted'),
+                            ),
                           );
                         }
                       : null,
-                  child: Text('Delete Selected'),
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  child: const Text('Delete Selected'),
                 ),
             ],
           ),

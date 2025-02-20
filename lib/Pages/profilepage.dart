@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/models/user.dart';
+import 'package:simple_app/widgets/prfile_text.dart';
 
 class ProfilePage extends StatelessWidget {
   final User users;
@@ -27,20 +28,11 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-                Text(
-                  "Username: ${users.username}",
-                  style: TextStyle(fontSize: fontSize),
-                ),
+                Flexible(child: CustomUsernameText(content: "Username: ${users.username}",fontSize: fontSize),),
                 SizedBox(height: 10),
-                Text(
-                  "Email: ${users.email}",
-                  style: TextStyle(fontSize: fontSize),
-                ),
+                Flexible(child: CustomUsernameText(content:  "Email: ${users.email}",fontSize: fontSize),),
                 SizedBox(height: 10),
-                Text(
-                  "Gender: ${users.gender ? "Male" : "Female"}",
-                  style: TextStyle(fontSize: fontSize),
-                ),
+                Flexible(child: CustomUsernameText(content:  "Gender: ${users.gender ? "Male" : "Female"}",fontSize: fontSize),),
                 SizedBox(height: 20),
                 SizedBox(
                   width:  MediaQuery.of(context).size.width * 0.9,
